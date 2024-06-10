@@ -1,0 +1,1 @@
+export { EventSourcing } from './EventSourcing';
