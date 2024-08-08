@@ -1,17 +1,36 @@
-const express = require('express');
-const cors = require('cors');
+const ws = require('ws');
 
-const { addNewMessagesController, addConnectionController } = require('./controllers');
+const PORT = 7005;
 
-const PORT = 3000;
+const wsServer = new ws.WebSocketServer({
+  port: PORT,
+}, () => {
+  console.log(`WS server start on port: ${PORT}`);
+})
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+wsServer.on('connection', (wsConnection) => {
+  wsConnection.on('message', (messageString) => {
+    const message = JSON.parse(messageString);
 
-app.get('/connect', addConnectionController);
-app.post('/new-message', addNewMessagesController);
+    switch (message.event) {
+      case 'message': {
+        broadcastMessage(message);
+        break;
+      }
 
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+      case 'connection': {
+        broadcastMessage(message);
+        break;
+      }
+
+      default:
+        break;
+    }
+  })
 });
+
+const broadcastMessage = (message) => {
+  wsServer.clients.forEach((client) => {
+    client.send(JSON.stringify(message));
+  })
+}
