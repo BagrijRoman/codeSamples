@@ -1,12 +1,22 @@
 import React from 'react';
 
 import './toolbar.less';
+import { toolState } from "../../store/toolStore";
+import { Brush, Rect } from "../../tools";
+
+import { canvasState } from "../../store/canvasStore";
 
 export const Toolbar = () => {
   return (
     <div className="toolbar">
-      <button className="toolbar-button btn-brush"/>
-      <button className="button toolbar-button btn-rect"/>
+      <button
+        className="toolbar-button btn-brush"
+        onClick={() => canvasState.canvas && toolState.setTool(new Brush(canvasState.canvas))}
+      />
+      <button
+        className="button toolbar-button btn-rect"
+        onClick={() => canvasState.canvas && toolState.setTool(new Rect(canvasState.canvas))}
+      />
       <button className="button toolbar-button btn-circle"/>
       <button className="button toolbar-button btn-eraser"/>
       <button className="button toolbar-button btn-line"/>

@@ -1,5 +1,7 @@
-import { Tool } from './Tool';
 import React from "react";
+
+import { Tool } from './Tool';
+
 
 export class Brush extends Tool {
   mouseDown: boolean;
@@ -17,30 +19,24 @@ export class Brush extends Tool {
   }
 
   mouseUpHandler(event: MouseEvent) {
-    console.log('mouseUpHandler !!!!!!');
-
     this.mouseDown = false;
   }
 
   mouseDownHandler(event: React.MouseEvent<CanvasRect>) {
-
-    console.log('mouseDownHandler !!!!!!');
-
     this.mouseDown = true;
     this.ctx.beginPath();
-    this.ctx.moveTo(event.clientX - event.target.offsetTarget, event.pageY - event.target.offsetTop);
+    // @ts-ignore
+    this.ctx.moveTo(event.pageX - event.target.offsetLeft, event.pageY - event.target.offsetTop)
   }
 
   mouseMoveHandler(event: React.MouseEvent<CanvasRect>) {
     if (this.mouseDown) {
+      // @ts-ignore
       this.draw(event.clientX - event.target.offsetLeft, event.pageY - event.target.offsetTop);
     }
   }
 
   draw(x: number, y: number) {
-
-    console.log('draw   x ', x, '   y ', y);
-
     this.ctx.lineTo(x, y);
     this.ctx.stroke();
   }

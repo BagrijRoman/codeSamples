@@ -2,15 +2,15 @@ import { makeAutoObservable } from 'mobx';
 
 
 class ToolState {
-  tool: string = '';
+  tool: unknown = undefined;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setTool(tool) {
+  setTool(tool: unknown) {
     this.tool = tool;
   }
 }
 
-export const toolStore =  new ToolState();
+export const toolState =  new ToolState();
