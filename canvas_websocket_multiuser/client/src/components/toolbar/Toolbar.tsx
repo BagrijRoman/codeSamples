@@ -2,7 +2,7 @@ import React from 'react';
 
 import './toolbar.less';
 import { toolState } from "../../store/toolStore";
-import { Brush, Rect } from "../../tools";
+import { Brush, Rect, Circle } from "../../tools";
 
 import { canvasState } from "../../store/canvasStore";
 
@@ -17,7 +17,10 @@ export const Toolbar = () => {
         className="button toolbar-button btn-rect"
         onClick={() => canvasState.canvas && toolState.setTool(new Rect(canvasState.canvas))}
       />
-      <button className="button toolbar-button btn-circle"/>
+      <button
+        className="button toolbar-button btn-circle"
+        onClick={() => canvasState.canvas && toolState.setTool(new Circle(canvasState.canvas))}
+      />
       <button className="button toolbar-button btn-eraser"/>
       <button className="button toolbar-button btn-line"/>
       <input type="color" className="button toolbar-button btn-color"/>
