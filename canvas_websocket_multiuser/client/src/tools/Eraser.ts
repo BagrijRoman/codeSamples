@@ -2,7 +2,7 @@ import React from "react";
 
 import { Tool } from './Tool';
 
-export class Brush extends Tool {
+export class Eraser extends Tool {
   mouseDown: boolean;
 
   constructor(canvas: HTMLCanvasElement) {
@@ -23,7 +23,9 @@ export class Brush extends Tool {
 
   mouseDownHandler(event: React.MouseEvent<CanvasRect>) {
     this.mouseDown = true;
+    this.ctx.lineWidth = 5;
     this.ctx.beginPath();
+    this.ctx.globalCompositeOperation="destination-out";
     // @ts-ignore
     this.ctx.moveTo(event.pageX - event.target.offsetLeft, event.pageY - event.target.offsetTop)
   }
