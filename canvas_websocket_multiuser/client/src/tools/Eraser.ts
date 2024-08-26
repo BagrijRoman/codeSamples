@@ -23,7 +23,6 @@ export class Eraser extends Tool {
 
   mouseDownHandler(event: React.MouseEvent<CanvasRect>) {
     this.mouseDown = true;
-    this.ctx.lineWidth = 5;
     this.ctx.beginPath();
     this.ctx.globalCompositeOperation="destination-out";
     // @ts-ignore

@@ -7,6 +7,12 @@ import { Brush, Rect, Circle, Line, Eraser } from "../../tools";
 import { canvasState } from "../../store/canvasStore";
 
 export const Toolbar = () => {
+  const onColorChange = (e) => {
+    toolState.setFillColor(e.target.value)
+  }
+
+
+
   return (
     <div className="toolbar">
       <button
@@ -29,7 +35,11 @@ export const Toolbar = () => {
         className="button toolbar-button btn-line"
         onClick={() => canvasState.canvas && toolState.setTool(new Line(canvasState.canvas))}
       />
-      <input type="color" className="button toolbar-button btn-color"/>
+      <input
+        type="color"
+        className="button toolbar-button btn-color"
+        onChange={onColorChange}
+      />
       <button className="button toolbar-button btn-undo"/>
       <button className="button toolbar-button btn-redo"/>
       <button className="button toolbar-button btn-save"/>
