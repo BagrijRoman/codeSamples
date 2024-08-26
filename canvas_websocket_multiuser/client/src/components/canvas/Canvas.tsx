@@ -15,14 +15,18 @@ export const Canvas = observer(() => {
     toolState.setTool(new Brush(canvasRef.current as HTMLCanvasElement));
   }, [])
 
+  const onMouseDown = () => {
+    canvasState.pushToUndo(canvasRef.current.toDataURL())
+  };
+
   return (
     <div className="canvas">
       <canvas
         ref={canvasRef as React.MutableRefObject<HTMLCanvasElement>}
         width={640}
         height={480}
+        onMouseDown={onMouseDown}
       />
-
     </div>
   );
 });

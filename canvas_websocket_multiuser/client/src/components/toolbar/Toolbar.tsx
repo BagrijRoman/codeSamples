@@ -40,8 +40,14 @@ export const Toolbar = () => {
         className="button toolbar-button btn-color"
         onChange={onColorChange}
       />
-      <button className="button toolbar-button btn-undo"/>
-      <button className="button toolbar-button btn-redo"/>
+      <button
+        className="button toolbar-button btn-undo"
+        onClick={() => canvasState.undo()}
+      />
+      <button
+        className="button toolbar-button btn-redo"
+        onClick={() => canvasState.redo()}
+      />
       <button className="button toolbar-button btn-save"/>
 
     </div>
