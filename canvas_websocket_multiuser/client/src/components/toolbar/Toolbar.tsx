@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, ChangeEvent, MouseEvent } from 'react';
 
 import './toolbar.less';
 import { toolState } from "../../store/toolStore";
@@ -7,11 +7,25 @@ import { Brush, Rect, Circle, Line, Eraser } from "../../tools";
 import { canvasState } from "../../store/canvasStore";
 
 export const Toolbar = () => {
-  const onColorChange = (e) => {
+  const onColorChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     toolState.setFillColor(e.target.value)
-  }
+  }, []);
 
+  const onDownloadClick = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+    const canvas = canvasState.canvas;
 
+    if (!canvas) {
+      return;
+    }
+
+    const dataUrl = canvas.toDataURL();
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = canvasState.sessionId + ".jpg";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } , []);
 
   return (
     <div className="toolbar">
@@ -48,7 +62,10 @@ export const Toolbar = () => {
         className="button toolbar-button btn-redo"
         onClick={() => canvasState.redo()}
       />
-      <button className="button toolbar-button btn-save"/>
+      <button
+        className="button toolbar-button btn-save"
+        onClick={onDownloadClick}
+      />
 
     </div>
   );
