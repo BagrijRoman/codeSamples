@@ -17,23 +17,23 @@ export const Toolbar = () => {
     <div className="toolbar">
       <button
         className="toolbar-button btn-brush"
-        onClick={() => canvasState.canvas && toolState.setTool(new Brush(canvasState.canvas))}
+        onClick={() => canvasState.canvas && toolState.setTool(new Brush(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
       />
       <button
         className="button toolbar-button btn-rect"
-        onClick={() => canvasState.canvas && toolState.setTool(new Rect(canvasState.canvas))}
+        onClick={() => canvasState.canvas && toolState.setTool(new Rect(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
       />
       <button
         className="button toolbar-button btn-circle"
-        onClick={() => canvasState.canvas && toolState.setTool(new Circle(canvasState.canvas))}
+        onClick={() => canvasState.canvas && toolState.setTool(new Circle(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
       />
       <button
         className="button toolbar-button btn-eraser"
-        onClick={() => canvasState.canvas && toolState.setTool(new Eraser(canvasState.canvas))}
+        onClick={() => canvasState.canvas && toolState.setTool(new Eraser(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
       />
       <button
         className="button toolbar-button btn-line"
-        onClick={() => canvasState.canvas && toolState.setTool(new Line(canvasState.canvas))}
+        onClick={() => canvasState.canvas && toolState.setTool(new Line(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
       />
       <input
         type="color"

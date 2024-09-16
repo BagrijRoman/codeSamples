@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { Canvas } from './Canvas';
 import { canvasState } from "../../store/canvasStore";
 import { toolState } from "../../store/toolStore";
-import { Brush } from "../../tools";
+import { Brush, Rect } from "../../tools";
 
 export const CanvasContainer = observer(() => {
   const [userName, setUserName] = useState<string>('');
@@ -86,6 +86,11 @@ export const CanvasContainer = observer(() => {
       case "finish": {
         ctx.beginPath();
         break;
+      }
+      case "rect": {
+        const { x, y, width, height } = figure;
+        Rect.staticDraw(ctx, x, y, width, height);
+        ctx.beginPath();
       }
 
       default: break;

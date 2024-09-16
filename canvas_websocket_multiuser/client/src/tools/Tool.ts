@@ -1,11 +1,10 @@
 
-interface IBroadcastActionData {
-  method: "draw",
-  figure?: {
-    type: "brush" | "finish",
-    x?: number,
-    y?: number,
-  }
+interface IBroadcastFigureData {
+  type: "brush" | "rect" | "finish",
+  x?: number,
+  y?: number,
+  width?: number,
+  height?: number,
 }
 
 export class Tool {
@@ -34,11 +33,12 @@ export class Tool {
     this.ctx.lineWidth = lineWidth;
   }
 
-  broadCastAction(broadcastData: IBroadcastActionData) {
+  broadCastDrawAction(figure: IBroadcastFigureData) {
     this.socket.send(
       JSON.stringify({
         id: this.sessionId,
-        ...broadcastData,
+        method: "draw",
+        figure,
       })
     );
   }

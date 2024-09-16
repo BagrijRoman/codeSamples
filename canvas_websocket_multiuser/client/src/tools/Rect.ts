@@ -6,6 +6,8 @@ export class Rect extends Tool {
   mouseDown: boolean;
   startX: number;
   startY: number;
+  width: number;
+  height: number;
   savedImg: string;
 
   constructor(canvas: HTMLCanvasElement, socket: WebSocket, sessionId: string) {
@@ -14,6 +16,8 @@ export class Rect extends Tool {
     this.mouseDown = false;
     this.startX = 0;
     this.startY = 0;
+    this.width = 0;
+    this.height = 0;
     this.savedImg = '';
   }
 
@@ -25,6 +29,14 @@ export class Rect extends Tool {
 
   mouseUpHandler(event: MouseEvent) {
     this.mouseDown = false;
+
+    this.broadCastDrawAction({
+      type: 'rect',
+      x: this.startX,
+      y: this.startY,
+      width: this.width,
+      height: this.height,
+    });
   }
 
   mouseDownHandler(event: React.MouseEvent<CanvasRect>) {
@@ -43,10 +55,10 @@ export class Rect extends Tool {
       const currentX: number = event.pageX - event.target.offsetLeft;
       // @ts-ignore
       const currentY: number = event.pageY - event.target.offsetTop;
-      const width: number = currentX - this.startX;
-      const height: number = currentY - this.startY;
+      this.width = currentX - this.startX;
+      this.height = currentY - this.startY;
 
-      this.draw(this.startX, this.startY, width, height);
+      this.draw(this.startX, this.startY, this.width, this.height);
     }
   }
 
@@ -61,5 +73,12 @@ export class Rect extends Tool {
        this.ctx.fill();
        this.ctx.stroke();
      }
+  }
+
+  static staticDraw(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number) {
+    ctx.beginPath();
+    ctx.rect(x, y, width, height);
+    ctx.fill();
+    ctx.stroke();
   }
 }

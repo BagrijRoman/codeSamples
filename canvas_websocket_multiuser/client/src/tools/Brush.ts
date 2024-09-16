@@ -20,11 +20,8 @@ export class Brush extends Tool {
   mouseUpHandler(event: MouseEvent) {
     this.mouseDown = false;
 
-    this.broadCastAction({
-      method: 'draw',
-      figure: {
-        type: 'finish',
-      },
+    this.broadCastDrawAction({
+      type: 'finish',
     });
   }
 
@@ -42,13 +39,10 @@ export class Brush extends Tool {
       // @ts-ignore
       const currentY: number = event.pageY - event.target.offsetTop;
 
-      this.broadCastAction({
-        method: 'draw',
-        figure: {
-          type: "brush",
-          x: currentX,
-          y: currentY,
-        },
+      this.broadCastDrawAction({
+        type: "brush",
+        x: currentX,
+        y: currentY,
       });
     }
   }
