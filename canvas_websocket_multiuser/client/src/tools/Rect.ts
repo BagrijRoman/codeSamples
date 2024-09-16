@@ -8,8 +8,8 @@ export class Rect extends Tool {
   startY: number;
   savedImg: string;
 
-  constructor(canvas: HTMLCanvasElement) {
-    super(canvas);
+  constructor(canvas: HTMLCanvasElement, socket: WebSocket, sessionId: string) {
+    super(canvas, socket, sessionId);
     this.listen();
     this.mouseDown = false;
     this.startX = 0;

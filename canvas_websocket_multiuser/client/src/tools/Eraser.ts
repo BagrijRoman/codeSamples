@@ -5,8 +5,8 @@ import { Tool } from './Tool';
 export class Eraser extends Tool {
   mouseDown: boolean;
 
-  constructor(canvas: HTMLCanvasElement) {
-    super(canvas);
+  constructor(canvas: HTMLCanvasElement, socket: WebSocket, sessionId: string) {
+    super(canvas, socket, sessionId);
     this.listen();
     this.mouseDown = false;
   }

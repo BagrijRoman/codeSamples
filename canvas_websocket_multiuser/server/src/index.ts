@@ -8,7 +8,6 @@ const { app, getWss, applyTo } = expressWs(express());
 const aWss = getWss();
 const PORT = process.env.PORT || 5005;
 
-
 interface ClientWebSocket extends WebSocket {
   id?: string;
 }
@@ -22,7 +21,10 @@ app.all('/test', (req: express.Request, res: express.Response) => res.json({ ser
 
 app.ws('/', (ws: ClientWebSocket, req) => {
   console.log('new ws connection was established');
-  ws.send('You was successfully connected');
+  ws.send(JSON.stringify({
+    method: 'info',
+    message: 'You was successfully connected'
+  }));
 
   ws.on('message', (message: string) => {
     const msg = JSON.parse(message);
@@ -30,6 +32,11 @@ app.ws('/', (ws: ClientWebSocket, req) => {
     switch (msg.method) {
       case 'connection': {
         connectionHandler(ws, message);
+        break;
+      }
+
+      case 'draw': {
+        broadcastMessage(ws, message);
         break;
       }
 
@@ -47,11 +54,23 @@ const connectionHandler = (ws: ClientWebSocket, message: string) => {
   broadcastConnection(ws, message);
 }
 
+const broadcastMessage = (ws: ClientWebSocket, message: string) => {
+  const msg = JSON.parse(message);
+  aWss.clients.forEach((client: ClientWebSocket) => {
+    if (client.id === msg.id) {
+      client.send(message);
+    }
+  })
+}
+
 const broadcastConnection = (ws: ClientWebSocket, message: string) => {
   const msg = JSON.parse(message);
   aWss.clients.forEach((client: ClientWebSocket) => {
     if (client.id === msg.id) {
-      client.send(`User: ${msg.userName} was connected`);
+      client.send(JSON.stringify({
+        method: 'connection',
+        message: `User: ${msg.userName} was connected`,
+      }));
     }
   })
 }

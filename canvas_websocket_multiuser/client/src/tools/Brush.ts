@@ -1,12 +1,12 @@
-import React from "react";
+import React, { Context } from "react";
 
 import { Tool } from './Tool';
 
 export class Brush extends Tool {
   mouseDown: boolean;
 
-  constructor(canvas: HTMLCanvasElement) {
-    super(canvas);
+  constructor(canvas: HTMLCanvasElement, socket: WebSocket, sessionId: string) {
+    super(canvas, socket, sessionId);
     this.listen();
     this.mouseDown = false;
   }
@@ -19,6 +19,13 @@ export class Brush extends Tool {
 
   mouseUpHandler(event: MouseEvent) {
     this.mouseDown = false;
+
+    this.broadCastAction({
+      method: 'draw',
+      figure: {
+        type: 'finish',
+      },
+    });
   }
 
   mouseDownHandler(event: React.MouseEvent<CanvasRect>) {
@@ -31,12 +38,23 @@ export class Brush extends Tool {
   mouseMoveHandler(event: React.MouseEvent<CanvasRect>) {
     if (this.mouseDown) {
       // @ts-ignore
-      this.draw(event.clientX - event.target.offsetLeft, event.pageY - event.target.offsetTop);
+      const currentX: number = event.clientX - event.target.offsetLeft;
+      // @ts-ignore
+      const currentY: number = event.pageY - event.target.offsetTop;
+
+      this.broadCastAction({
+        method: 'draw',
+        figure: {
+          type: "brush",
+          x: currentX,
+          y: currentY,
+        },
+      });
     }
   }
 
-  draw(x: number, y: number) {
-    this.ctx.lineTo(x, y);
-    this.ctx.stroke();
+  static draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
+    ctx.lineTo(x, y);
+    ctx.stroke();
   }
 }

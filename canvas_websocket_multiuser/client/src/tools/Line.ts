@@ -8,8 +8,8 @@ export class Line extends Tool {
   startY: number;
   savedImg: string;
 
-  constructor(canvas: HTMLCanvasElement) {
-    super(canvas);
+  constructor(canvas: HTMLCanvasElement, socket: WebSocket, sessionId: string) {
+    super(canvas, socket, sessionId);
     this.listen();
     this.mouseDown = false;
     this.startX = 0;
@@ -43,8 +43,20 @@ export class Line extends Tool {
       const currentX: number = event.pageX - event.target.offsetLeft;
       // @ts-ignore
       const currentY: number = event.pageY - event.target.offsetTop;
-
+      //
       this.draw(this.startX, this.startY, currentX, currentY);
+
+      // this.socket.send(
+      //   JSON.stringify({
+      //     id: this.sessionId,
+      //     method: 'draw',
+      //     figure: {
+      //       type: "brush",
+      //       x: currentX,
+      //       y: currentY,
+      //     },
+      //   })
+      // );
     }
   }
 
